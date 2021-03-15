@@ -12,6 +12,6 @@ namespace Project1.Models
        
         public DateTime Date { get; set; }
         public bool Booked { get; set; }
-
+        //testing merge
     }
 }
