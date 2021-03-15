@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\Appointment.cs" />
+    <Compile Remove="Models\Timeslot.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Models\Appointment.cs" />
+    <None Include="Models\Timeslot.cs" />
   </ItemGroup>
 
 </Project>
