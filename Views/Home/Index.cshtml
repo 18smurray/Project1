@@ -11,9 +11,13 @@
 </div>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Tour Information
-</button>
+<div class="text-center">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Tour Information
+    </button>
+</div>
+
+<br />
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -35,11 +39,9 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-8 justify-content-center">
-        <img src="~/img/temple.jpg" /><br /><br />
+<div class="text-center">
+    <div class="text-center">
+        <img src="~/img/temple.jpg" class="rounded" /><br /><br />
         <a class="btn btn-dark" asp-controller="Home" asp-action="ViewTimeSlots">Schedule an Appointment</a>
     </div>
-
-
 </div>
