@@ -65,16 +65,14 @@ namespace Project1.Controllers
                 .Where(t => t.AppointmentID == null));
         }
 
-        /*[HttpGet]
-         * public IActionResult ViewTimeC()
-         * {
-         *      //Only return timeslots that are not booked yet
-         *      return View(_repository.Timeslots
-         *          .OrderBy(t => t.Id ??? could use id)
-         *          .Where(t => t.Booked == false)
-         *          );
-         * }
-        */
+        [HttpPost]
+        public IActionResult ViewTimeSlots(int timeslotid)
+        {
+            var timeslot = context.Timeslots.Where(t => t.TimeslotID == timeslotid);
+
+            return View("ScheduleAppointments", timeslot);
+        }
+
         /*[HttpPost] - sending timeslot to the form 
          * public IActionResult SignUpPage(Timeslot.Id timeslotid)
          * {
@@ -135,17 +133,6 @@ namespace Project1.Controllers
 
             return View(AppList);
         }
-
-
-
-
-
-
-
-
-
-
-
 
 
         public IActionResult Privacy()
