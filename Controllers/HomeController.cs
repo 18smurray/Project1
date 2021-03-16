@@ -17,7 +17,7 @@ namespace Project1.Controllers
         //Variable for the DB context
         private DatabaseContext context { get; set; }
 
-        //Add in parameter IAppointmentRepository repository
+        //Constructor for the Home Controller - initialize the DB context passed as parameter
         public HomeController(ILogger<HomeController> logger, DatabaseContext con)
         {
             _logger = logger;
@@ -25,62 +25,50 @@ namespace Project1.Controllers
         }
 
 
-        //Action for the Home Page
+        //Action for the Home Page - just returns the View
         public IActionResult Index()
         {
-            List<string> AppList = new List<string>();
-
-                foreach (var x in context.Timeslots)
-                {
-                    if (x.AppointmentID != null)
-                    {
-                        var y = context.Appointments.Where(a => a.AppointmentID == x.AppointmentID).FirstOrDefault();
-
-                        AppList.Add(string.Format((x.Date).ToString() + " " +  y.GroupName + " " + y.GroupSize ));
-                    }
-                }
-
-                return View();
-
+            return View();
         }
 
-            /*return View(new TimeslotAppointmentViewModel
-            {
-                Timeslots = context.Timeslots,
-                Appointments = context.Appointments
-            }
-                ); */
-        
 
-        //SignUpPage - have to pass in available timeslots
-        //Do we need a get and a set to pass the time to the form???
-        //Have ID as a hidden field...?
-
-
+        //Get Method for the ViewTimeSlots page (when page is first accessed)
         [HttpGet]
         public IActionResult ViewTimeSlots()
         {
+            //Returns all the Timeslots in the model where the appointmentid is null
+            //Only return timeslots that don't have an appointment already associated with them
             return View(context.Timeslots
                 .OrderBy(t => t.TimeslotID)
                 .Where(t => t.AppointmentID == null));
         }
 
+
+        //Overloaded Method 
+        //Post method for ViewTimeSlots page (when time slot has been selected)
+        //(Kind of servers as a Get method for the ScheduleAppointment page too...)
         [HttpPost]
         public IActionResult ViewTimeSlots(int timeslotid)
         {
+            //Get the Timeslot model instance where the timeslotid is equal to the id passed in as a parameter
             Timeslot timeslot = context.Timeslots.Where(t => t.TimeslotID == timeslotid).FirstOrDefault();
-
+            //Set the Timeslot object that corresponds to the id passed in the ViewBag
+            //Can use this to reference the timeslot information in the return View
             ViewBag.Timeslot = timeslot;
 
+            //Indicate which view should be returned
             return View("ScheduleAppointment");
         }
 
-
+        //Post method for the Schedule Appointment page
+        //Pass the appointment model structure and timeslotID from the form's hidden input
         [HttpPost]
         public IActionResult ScheduleAppointment(Appointment appt, int timeslotID)
         {
+            //Create a new Appointment model object to be added to the database
             context.Appointments.Add
                 (
+                    //Assign the new Appointment attributes the values from the form
                     new Appointment
                     {
                         GroupName = appt.GroupName,
@@ -90,80 +78,47 @@ namespace Project1.Controllers
                     }
                 );
 
+            //Save the changes to the database
             context.SaveChanges();
 
-            //context.Timeslots.Where(t => t.TimeslotID == timeslotid).FirstOrDefault()
+            //Variable for referencing the appointment most recently added to the database (has the highest appointmentid)
             var lastappt = context.Appointments.Max(x => x.AppointmentID);
 
+            //Variable for referencing the timeslot that corresponds to the timeslotid passed as a parameter
             var AssignedTime = context.Timeslots.Where(t => t.TimeslotID == timeslotID).FirstOrDefault();
 
+            //Sets the appointmentid for the Timeslot as the appointment just created
             AssignedTime.AppointmentID = lastappt;
+            //Make sure to save the changes!
             context.SaveChanges();
 
+            //Return to the Home Page
             return View("Index");
         }
 
-        /*[HttpPost] - sending timeslot to the form 
-         * public IActionResult SignUpPage(Timeslot.Id timeslotid)
-         * {
-         *      //Go to the form view and pass the timeslot data 
-         *      Could use Viewbag
-         *      @ViewBag.TimeId = timeslotid
-         *      return View("AppointmentForm" timeslotid)
-         * }
-        */
 
-        //AppointmentForm page (Can't get to from nav bar - only through the signuppage post method...?
-
-
-        //Not sure if we need this?
-        /*[HttpGet]
-         * public IActionResult AppointmentForm(Timeslot.Id timeslotid)
-         * {
-         *          return View(timeslotid)
-         * }
-        */
-
-        //For when the appointment form is submitted
-        /*[HttpPost]
-         * public IActionResult AppointmentForm(Timeslot.id timeslotid Appointment newappt)
-         * {
-         *          //Ensure model state is valid
-         *          if (ModelState.isValid)
-         *          
-         *          //Have to set timeslot id for the corresponding appointment...
-         *          
-         *          _repository.Appointments.Add(newappt);
-         *          _repository.SaveChanges();
-         *  
-         *          Need a method for adding new appointments to DB
-         *         
-         *          //Somehow set booked status for specific DB element
-         *          _repository.Timeslot.Where(timeId == timeslotid).Booked == true
-         * 
-         *          return View(ViewAppointments)
-         * }
-        */
-
-        
-        //View Appointments page
+        //View Appointments page - display all appointments in the database
         public IActionResult ViewAppointments()
         {
+            //Create a list of string to store concatonated appointment and timeslot information 
             List<string> AppList = new List<string>();
 
             foreach (var x in context.Timeslots)
             {
+                //For every timeslot, if the appointmentid is not null (there is an associated appointment)
                 if (x.AppointmentID != null)
                 {
+                    //Variable for referencing the appointment that corresponds to the timeslot (compare the appointment ids)
                     var y = context.Appointments.Where(a => a.AppointmentID == x.AppointmentID).FirstOrDefault();
-
+                    //Concatonate the appointment and timeslot information 
+                    //Add the string to the list
                     AppList.Add(string.Format((x.Date).ToString() + " " + y.GroupName + " " + y.GroupSize + " " + y.Phone + " " + y.Email));
                 }
             }
 
+            //return the default view and pass it the AppList
             return View(AppList);
         }
-
 
         public IActionResult Privacy()
         {
