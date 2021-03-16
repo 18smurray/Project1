@@ -8,6 +8,7 @@
 <form method="post" asp-action="ScheduleAppointment">
     <label asp-for="GroupName" >Group Name:</label>
     <input asp-for="GroupName"/>
+    <input type="hidden" name="timeslotID" value="@ViewBag.Timeslot.TimeslotID" />
     <br />
 
     <label asp-for="GroupSize">Group Size:</label>
