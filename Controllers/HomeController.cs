@@ -40,7 +40,7 @@ namespace Project1.Controllers
                     }
                 }
 
-                return View(AppList);
+                return View();
 
         }
 
@@ -77,10 +77,25 @@ namespace Project1.Controllers
 
 
         [HttpPost]
-        public IActionResult ScheduleAppointment(Appointment appt)
+        public IActionResult ScheduleAppointment(Appointment appt, int timeslotID)
         {
+            context.Appointments.Add
+                (
+                    new Appointment
+                    {
+                        GroupName = appt.GroupName,
+                        GroupSize = appt.GroupSize,
+                        Email = appt.Email,
+                        Phone = appt.Phone
+                    }
+                );
 
+            context.SaveChanges();
 
+            //context.Timeslots.Where(t => t.TimeslotID == timeslotid).FirstOrDefault()
+            var lastappt = context.Appointments.Max(x => x.AppointmentID);
+
+            ViewBag.Timeslot.AppointmentID = context.Appointments.Where(a => a.AppointmentID == lastappt);
             return View("Index");
         }
 
