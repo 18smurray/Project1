@@ -9,6 +9,6 @@ namespace Project1.Models.ViewModels
     {
         public IEnumerable<Timeslot> Timeslots { get; set; }
 
-        public IEnumerable<Appointment> Appointments { get; set; }
+        public IEnumerable<Appointment>? Appointments { get; set; }
     }
 }
