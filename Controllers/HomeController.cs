@@ -75,6 +75,15 @@ namespace Project1.Controllers
             return View("ScheduleAppointment");
         }
 
+
+        [HttpPost]
+        public IActionResult ScheduleAppointment(Appointment appt)
+        {
+
+
+            return View("Index");
+        }
+
         /*[HttpPost] - sending timeslot to the form 
          * public IActionResult SignUpPage(Timeslot.Id timeslotid)
          * {
