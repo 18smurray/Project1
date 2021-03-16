@@ -1,7 +1,7 @@
-﻿@model Appointment
+﻿@model TimeslotAppointmentViewModel
 
 <h1>This is the Schedule Appointment page</h1>
-<p>@ViewBag.Timeslot.Date</p>
+<p>@Model.Timeslots.Date</p>
 
 <form>
     <label asp-for="GroupName" >Group Name:</label>
