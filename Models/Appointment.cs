@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Project1.Models
 {
     //so this will be the appointment class. ID is the key, the rest are self-explanitory. 
-    public class ViewAppointment
+    public class Appointment
     {
         [Key]
         [Required]

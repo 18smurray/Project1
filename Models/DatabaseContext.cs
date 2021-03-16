@@ -13,6 +13,6 @@ namespace Project1.Models
 
         public DbSet<Timeslot> Timeslots { get; set; }
 
-        public DbSet<ViewAppointment> Appointments { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
     }
 }
