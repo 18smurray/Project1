@@ -70,12 +70,9 @@ namespace Project1.Controllers
         {
             Timeslot timeslot = context.Timeslots.Where(t => t.TimeslotID == timeslotid).FirstOrDefault();
 
-            return View("ScheduleAppointment", 
-                new TimeslotAppointmentViewModel
-                {
-                    Timeslots = context.Timeslots.Where(t => t.TimeslotID == timeslotid),
-                }
-                );
+            ViewBag.Timeslot = timeslot;
+
+            return View("ScheduleAppointment");
         }
 
         /*[HttpPost] - sending timeslot to the form 
