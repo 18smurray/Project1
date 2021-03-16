@@ -68,7 +68,7 @@ namespace Project1.Controllers
         [HttpPost]
         public IActionResult ViewTimeSlots(int timeslotid)
         {
-            var timeslot = context.Timeslots.Where(t => t.TimeslotID == timeslotid).FirstOrDefault();
+            Timeslot timeslot = context.Timeslots.Where(t => t.TimeslotID == timeslotid).FirstOrDefault();
 
             return View("ScheduleAppointment", timeslot);
         }
