@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Project1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,17 +15,24 @@ namespace Project1
 {
     public class Startup
     {
+       //This creates a configuration for the database
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            //Here I am adding the database context. Database has 2 tables, appointments and timeslots
+            services.AddDbContext<DatabaseContext>(options =>
+            {
+                options.UseSqlite(Configuration["ConnectionStrings:DatabaseConnection"]);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
