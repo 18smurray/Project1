@@ -13,10 +13,11 @@
                 <td><p>@date.Date</p></td>
                 <td>
                     <form method="post" asp-action="ViewTimeSlots">
-                        <input type="hidden" value="@date.TimeslotID" />
+                        <input type="hidden" name="timeslotid" value="@date.TimeslotID" />
                         <button type="submit" class="btn-success btn-small">Schedule Appointment</button>
                     </form>
                 </td>
+                <td>@date.TimeslotID</td>
             </tr>
         }
 </table>

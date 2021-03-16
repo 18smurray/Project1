@@ -1,4 +1,18 @@
-﻿@model Timeslot
+﻿@model TimeslotAppointmentViewModel
 
 <h1>This is the Schedule Appointment page</h1>
-<p>@Model.Date</p>
+<p>@Model.Timeslots.Date</p>
+
+<form>
+    <label asp-for="GroupName" >Group Name:</label>
+    <input asp-for="GroupName"/>
+
+    <label asp-for="GroupSize">Group Size:</label>
+    <input asp-for="GroupSize" />
+
+    <label asp-for="Email">Email:</label>
+    <input asp-for="Email"/>
+
+    <label asp-for="Phone">Phone:</label>
+    <input asp-for="Phone" />
+</form>
