@@ -56,8 +56,17 @@ namespace Project1.Controllers
         //Do we need a get and a set to pass the time to the form???
         //Have ID as a hidden field...?
 
+
+        [HttpGet]
+        public IActionResult ViewTimeSlots()
+        {
+            return View(context.Timeslots
+                .OrderBy(t => t.TimeslotID)
+                .Where(t => t.AppointmentID == null));
+        }
+
         /*[HttpGet]
-         * public IActionResult SignUpPage()
+         * public IActionResult ViewTimeC()
          * {
          *      //Only return timeslots that are not booked yet
          *      return View(_repository.Timeslots
@@ -110,30 +119,22 @@ namespace Project1.Controllers
 
         
         //View Appointments page
-
-        /*
         public IActionResult ViewAppointments()
         {
-            return View(
-                
+            List<string> AppList = new List<string>();
 
-                );
+            foreach (var x in context.Timeslots)
+            {
+                if (x.AppointmentID != null)
+                {
+                    var y = context.Appointments.Where(a => a.AppointmentID == x.AppointmentID).FirstOrDefault();
+
+                    AppList.Add(string.Format((x.Date).ToString() + " " + y.GroupName + " " + y.GroupSize));
+                }
+            }
+
+            return View(AppList);
         }
-        */
-
-
-         /*
-         * public IActionResult ViewAppointments()
-         * {
-         * 
-         *      I could format and return a list of strings here???
-         *      Have to grab time and date using the set timeslotid for the appointment
-         *      return View(
-         *      
-         *      )
-         *      
-         * }
-        */
 
 
 
