@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Project1.Models;
+using Project1.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,23 +15,42 @@ namespace Project1.Controllers
         private readonly ILogger<HomeController> _logger;
 
         //Variable for the DB context
-        //Private IAppointmentRepository = _repository
-            //Will be used to refer to different DBContexts...
-            //_reposiotory.Timeslots and _repository.Appointments?
+        private DatabaseContext context { get; set; }
 
         //Add in parameter IAppointmentRepository repository
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, DatabaseContext con)
         {
             _logger = logger;
-            //_repository = repository
+            context = con;
         }
 
 
         //Action for the Home Page
         public IActionResult Index()
         {
-            return View();
+            List<string> AppList = new List<string>();
+
+                foreach (var x in context.Timeslots)
+                {
+                    if (x.AppointmentID != null)
+                    {
+                        var y = context.Appointments.Where(a => a.AppointmentID == x.AppointmentID).FirstOrDefault();
+
+                        AppList.Add(string.Format((x.Date).ToString() + " " +  y.GroupName + " " + y.GroupSize ));
+                    }
+                }
+
+                return View(AppList);
+
         }
+
+            /*return View(new TimeslotAppointmentViewModel
+            {
+                Timeslots = context.Timeslots,
+                Appointments = context.Appointments
+            }
+                ); */
+        
 
         //SignUpPage - have to pass in available timeslots
         //Do we need a get and a set to pass the time to the form???
@@ -90,8 +110,20 @@ namespace Project1.Controllers
 
         
         //View Appointments page
-         /*[HttpGet]
-         * public IActionResult SignUpPage()
+
+        /*
+        public IActionResult ViewAppointments()
+        {
+            return View(
+                
+
+                );
+        }
+        */
+
+
+         /*
+         * public IActionResult ViewAppointments()
          * {
          * 
          *      I could format and return a list of strings here???
