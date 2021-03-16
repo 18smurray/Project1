@@ -95,7 +95,11 @@ namespace Project1.Controllers
             //context.Timeslots.Where(t => t.TimeslotID == timeslotid).FirstOrDefault()
             var lastappt = context.Appointments.Max(x => x.AppointmentID);
 
-            ViewBag.Timeslot.AppointmentID = context.Appointments.Where(a => a.AppointmentID == lastappt);
+            var AssignedTime = context.Timeslots.Where(t => t.TimeslotID == timeslotID).FirstOrDefault();
+
+            AssignedTime.AppointmentID = lastappt;
+            context.SaveChanges();
+
             return View("Index");
         }
 
