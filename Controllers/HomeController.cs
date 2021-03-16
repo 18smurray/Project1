@@ -127,7 +127,7 @@ namespace Project1.Controllers
                 {
                     var y = context.Appointments.Where(a => a.AppointmentID == x.AppointmentID).FirstOrDefault();
 
-                    AppList.Add(string.Format((x.Date).ToString() + " " + y.GroupName + " " + y.GroupSize));
+                    AppList.Add(string.Format((x.Date).ToString() + " " + y.GroupName + " " + y.GroupSize + " " + y.Phone + " " + y.Email));
                 }
             }
 
