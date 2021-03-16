@@ -1,8 +1,25 @@
 ﻿@model IEnumerable<Timeslot>
 
-@foreach (Timeslot date in Model)
-{
-    <p>@date.Date</p>
-}
+
+<table class="table table-dark">
+        <tr>
+            <th>Date</th>
+            <th></th>
+        </tr>
+
+        @foreach (Timeslot date in Model)
+        {
+            <tr>
+                <td><p>@date.Date</p></td>
+                <td>
+                    <form method="post" asp-action="ViewTimeSlots">
+                        <input type="hidden" value="@date.TimeslotID" />
+                        <button type="submit" class="btn-success btn-small">Schedule Appointment</button>
+                    </form>
+                </td>
+            </tr>
+        }
+</table>
+
 
 
