@@ -5,9 +5,11 @@
 
 <p>@ViewBag.Timeslot.Date</p>
 
+
+
 <form method="post" asp-action="ScheduleAppointment">
-    <label asp-for="GroupName" >Group Name:</label>
-    <input asp-for="GroupName"/>
+    <label asp-for="GroupName">Group Name:</label>
+    <input asp-for="GroupName" />
     <input type="hidden" name="timeslotID" value="@ViewBag.Timeslot.TimeslotID" />
     <br />
 
@@ -16,12 +18,15 @@
     <br />
 
     <label asp-for="Email">Email:</label>
-    <input asp-for="Email"/>
+    <input asp-for="Email" />
     <br />
 
     <label asp-for="Phone">Phone:</label>
     <input asp-for="Phone" />
     <br />
 
-    <button class="btn-outline-success" type="submit" >Schedule Appointment</button>
+    <div asp-validation-summary="All">
+    </div>
+
+    <button class="btn-outline-success" type="submit">Schedule Appointment</button>
 </form>
