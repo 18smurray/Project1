@@ -65,35 +65,47 @@ namespace Project1.Controllers
         [HttpPost]
         public IActionResult ScheduleAppointment(Appointment appt, int timeslotID)
         {
-            //Create a new Appointment model object to be added to the database
-            context.Appointments.Add
-                (
-                    //Assign the new Appointment attributes the values from the form
-                    new Appointment
-                    {
-                        GroupName = appt.GroupName,
-                        GroupSize = appt.GroupSize,
-                        Email = appt.Email,
-                        Phone = appt.Phone
-                    }
-                );
+            //Ensures validation constraints for the model are satisfied
+            if (ModelState.IsValid)
+            {
+                //Create a new Appointment model object to be added to the database
+                context.Appointments.Add
+                    (
+                        //Assign the new Appointment attributes the values from the form
+                        new Appointment
+                        {
+                            GroupName = appt.GroupName,
+                            GroupSize = appt.GroupSize,
+                            Email = appt.Email,
+                            Phone = appt.Phone
+                        }
+                    );
 
-            //Save the changes to the database
-            context.SaveChanges();
+                //Save the changes to the database
+                context.SaveChanges();
 
-            //Variable for referencing the appointment most recently added to the database (has the highest appointmentid)
-            var lastappt = context.Appointments.Max(x => x.AppointmentID);
+                //Variable for referencing the appointment most recently added to the database (has the highest appointmentid)
+                var lastappt = context.Appointments.Max(x => x.AppointmentID);
 
-            //Variable for referencing the timeslot that corresponds to the timeslotid passed as a parameter
-            var AssignedTime = context.Timeslots.Where(t => t.TimeslotID == timeslotID).FirstOrDefault();
+                //Variable for referencing the timeslot that corresponds to the timeslotid passed as a parameter
+                var AssignedTime = context.Timeslots.Where(t => t.TimeslotID == timeslotID).FirstOrDefault();
 
-            //Sets the appointmentid for the Timeslot as the appointment just created
-            AssignedTime.AppointmentID = lastappt;
-            //Make sure to save the changes!
-            context.SaveChanges();
+                //Sets the appointmentid for the Timeslot as the appointment just created
+                AssignedTime.AppointmentID = lastappt;
+                //Make sure to save the changes!
+                context.SaveChanges();
 
-            //Return to the Home Page
-            return View("Index");
+                //Return to the Home Page
+                return View("Index");
+            }
+
+            else
+            {
+                //Reset the ViewBag variable and return the current page (this time validation violations will be shown)
+                ViewBag.Timeslot = context.Timeslots.Where(t => t.TimeslotID == timeslotID).FirstOrDefault();
+                return View("ScheduleAppointment");
+            }
+            
         }
 
 
